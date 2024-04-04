@@ -1,0 +1,36 @@
+---------create virtual env
+ ---> python -m venv env
+ 
+python: This part of the command tells the computer to use the Python interpreter.
+-m: This flag tells Python to run the following module as a script, allowing you to run a module that is part of the standard library or installed in the current environment.
+venv: This is the module that Python runs as a script due to the -m flag. The venv module is Python’s standard module for creating and managing virtual environments.
+env: This final part of the command specifies the name of the directory for the new virtual environment. In this case, the virtual environment will be created in a directory named env in the current directory.
+
+-------To activate virtual environment
+-> env\Scripts\activate
+
+-------creates a new Django project named "backend"
+---> django-admin startproject backend
+
+django-admin: This is a command-line utility provided by Django to automate the creation of Django projects and manage various aspects of Django development.
+startproject: This is a subcommand of django-admin used to create a new Django project. It initializes a new directory structure and creates the necessary files and configurations for a Django project.
+backend: This is the name you've chosen for your Django project. You can replace "backend" with any other name you prefer for your project.
+
+
+------------To create a new Django app using the startapp command, 
+python manage.py startapp <app_name>
+
+manage.py: This is the script provided by Django that helps you manage your Django project. It provides various commands for tasks like creating apps, running the development server, applying database migrations, and more.
+startapp: This is a command provided by manage.py. It's used to create a new Django app within your project.
+
+
+
+
+
+
+
+
+
+
+
+
