@@ -1,4 +1,4 @@
----------create virtual env
+----------------create virtual env
  ---> python -m venv env
  
 python: This part of the command tells the computer to use the Python interpreter.
@@ -6,7 +6,7 @@ python: This part of the command tells the computer to use the Python interprete
 venv: This is the module that Python runs as a script due to the -m flag. The venv module is Python’s standard module for creating and managing virtual environments.
 env: This final part of the command specifies the name of the directory for the new virtual environment. In this case, the virtual environment will be created in a directory named env in the current directory.
 
--------To activate virtual environment
+---------------To activate virtual environment
 -> env\Scripts\activate
 
 -------creates a new Django project named "backend"
@@ -17,7 +17,7 @@ startproject: This is a subcommand of django-admin used to create a new Django p
 backend: This is the name you've chosen for your Django project. You can replace "backend" with any other name you prefer for your project.
 
 
-------------To create a new Django app using the startapp command, 
+-----------------To create a new Django app using the startapp command, 
 python manage.py startapp <app_name>
 
 manage.py: This is the script provided by Django that helps you manage your Django project. It provides various commands for tasks like creating apps, running the development server, applying database migrations, and more.
@@ -25,7 +25,70 @@ startapp: This is a command provided by manage.py. It's used to create a new Dja
 
 
 
+----------------JWT Tokens-----------------
+JWT (JSON Web Tokens) is a compact, URL-safe means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
 
+JWTs can be used for authentication and authorization in web applications, APIs, and microservices architectures. They are commonly used in stateless authentication mechanisms, where the server does not need to maintain any session state for each user.
+
+Anatomy of a JWT:
+A JWT consists of three parts separated by dots (.), encoded in the following format:
+
+css
+Copy code
+header.payload.signature
+Header: Contains metadata about the type of token and the cryptographic algorithm used to secure it. The header typically looks like this:
+
+json
+Copy code
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+Payload: Contains the claims, which are statements about an entity (typically the user) and additional data. Claims are often categorized as reserved claims (defined by the JWT specification) or public claims (custom claims defined by users). An example payload might look like this:
+
+json
+Copy code
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+}
+Signature: Used to verify that the message hasn't been changed along the way and, in the case of tokens signed with a secret key, to verify that the sender of the JWT is who it says it is and to ensure the message's authenticity.
+
+Example Workflow:
+Authentication: When a user logs in to a web application, the server generates a JWT containing the user's ID and any other relevant information.
+
+Token Issuance: The server sends the JWT back to the client.
+
+Token Storage: The client typically stores the JWT in local storage, session storage, or a cookie.
+
+Token Usage: For each subsequent request to protected routes or APIs, the client sends the JWT in the Authorization header as a bearer token.
+
+Token Verification: The server verifies the JWT's signature and decodes its contents to authenticate and authorize the user.
+
+Response: If the JWT is valid, the server processes the request and sends the response back to the client.
+
+Example Code:
+Here's a basic example of generating and verifying JWTs in Python using the PyJWT library:
+
+python
+Copy code
+import jwt
+
+# Generate a JWT
+payload = {"user_id": 123, "username": "john_doe"}
+secret_key = "your_secret_key"
+jwt_token = jwt.encode(payload, secret_key, algorithm="HS256")
+
+# Verify a JWT
+try:
+    decoded_payload = jwt.decode(jwt_token, secret_key, algorithms=["HS256"])
+    print("Token verified. Decoded payload:", decoded_payload)
+except jwt.InvalidTokenError:
+    print("Invalid token.")
+In this example, jwt.encode() is used to generate a JWT with a payload containing the user's ID and username. The jwt.decode() function is used to verify the JWT and decode its payload. If the token is valid, the decoded payload is printed.
+
+Remember to replace "your_secret_key" with a secret key that you securely manage in your application. Additionally, ensure that you securely transmit and store JWTs to prevent unauthorized access to sensitive information.
 
 
 
