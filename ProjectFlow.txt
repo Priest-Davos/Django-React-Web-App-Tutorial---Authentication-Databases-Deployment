@@ -1,0 +1,51 @@
+create a folder in system for project ...
+
+Initialize git // if want
+
+create a virtusl environment
+ -----------> python -m venv env
+
+Activate tha environment
+------------> env\Scripts\activate
+
+Add a .gitignore file and write there .env
+
+create a requirement.txt file
+Here list all required dependencies
+
+install all dependencies of requirement.txt file
+-------------> pip istall -r requirement.txt
+
+creates a new Django project named "backend"
+-------------> django-admin startproject backend
+
+cd to backend
+
+ create a new Django app using the startapp command, 
+-------------> python manage.py startapp <app_name>
+
+update setting.py file // copy the file
+backend\backend\settings.py
+
+Undersatand jwt tokens ....
+
+Create registration view
+
+-> create a serializer for the Django User model using Django REST Framework. It serializes/deserializes User instances to/from JSON representations.
+     crearte a file serializer.py in app(api) folder
+     code:
+     from django.contrib.auth.models import User  # Import the User model from Django's authentication system
+     from rest_framework import serializers  # Import serializers from Django REST Framework
+
+     class UserSerializer(serializers.ModelSerializer):  # Define a serializer for the User model
+        class Meta:  # Meta class to specify metadata options
+          model = User  # Specify the User model for the serializer
+          fields = ["id", "username" , "password"]  # Specify the fields to include in the serialized representation
+          extra_kwargs = {"password": {"write_only": True}}  # Specify additional options for the password field
+    
+        def create(self, validated_data):  # Method to create a new user
+        # Create a new user instance using the validated data
+         user = User.objects.create_user(**validated_data)
+          return user  # Return the newly created user instance
+
+
