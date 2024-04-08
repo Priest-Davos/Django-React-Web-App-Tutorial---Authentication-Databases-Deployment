@@ -11,3 +11,8 @@ class UserSerializer(serializers.ModelSerializer):  # Define a serializer for th
         # Create a new user instance using the validated data
         user = User.objects.create_user(**validated_data)
         return user  # Return the newly created user instance
+
+
+
+
+
