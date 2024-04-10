@@ -48,6 +48,8 @@ Create registration view
          user = User.objects.create_user(**validated_data)
           return user  # Return the newly created user instance
 
+
+
 ->create a Django view for creating user instances using Django REST Framework (DRF)
  update views.py
  code:-----------------------------------------------------------------------
@@ -57,12 +59,43 @@ from rest_framework import generics  # Import generics module from Django REST F
 from.serializers import UserSerializer  # Import UserSerializer class from your serializers module
 from rest_framework.permissions import IsAuthenticated, AllowAny  # Import permission classes from Django REST Framework
 
-# Create your views here.
+     # Create your views here.
 
 class CreateUserView(generics.CreateAPIView):  # Define a view for creating users
     queryset = User.objects.all()  # Specify the queryset to fetch all User objects
     serializer_class = UserSerializer  # Specify the serializer class to use for serializing/deserializing User objects
     permission_classes = [AllowAny]  # Specify the permission classes to determine who can access this view
+
+-> connecting our Auth routes
+   goto urls.py in backened and update
+   # This Django URL configuration defines the URL patterns for your Django project. Here's a breakdown of what each part of the code does:
+
+   code:-
+         from django.contrib import admin  # Import the admin module
+         from django.urls import path, include  # Import functions for defining URL patterns
+         from api.views import CreateUserView  # Import the CreateUserView class for user registration
+         from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # Import views for JWT token management
+
+         # Define URL patterns
+         urlpatterns = [
+             path('admin/', admin.site.urls),  # Map the URL '/admin/' to the Django admin interface
+             path("api/user/register/", CreateUserView.as_view(), name="register"),  # Map the URL '/api/user/register/' to the CreateUserView for user registration
+             path("api/token/", TokenObtainPairView.as_view(), name="get_token"),  # Map the URL '/api/token/' to the TokenObtainPairView for obtaining JWT tokens
+             path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),  # Map the URL '/api/token/refresh/' to the TokenRefreshView for refreshing JWT tokens
+             path("api-auth/", include("rest_framework.urls")),  # Include the Django REST Framework's authentication URLs
+         ]
+
+-> Now in terminal( cd to backened)
+The makemigrations cmd is used to generate new migration files based on changes you have made to your models. These migration files define the operations that need to be applied to the database schema to make it match the changes you've made to your models.
+-------python manage.py makemigrations
+--------python manage.py migrate
+
+---------python manage.py runserver
+
+ Now go to route ---/api/user/register/
+       ->create new user
+       -> now goto  ---/api/token/ 
+              ->generate access and refresh token by entering the user credential
 
 
 

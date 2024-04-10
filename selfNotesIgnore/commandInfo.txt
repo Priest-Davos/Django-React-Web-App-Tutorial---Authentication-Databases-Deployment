@@ -91,7 +91,22 @@ In this example, jwt.encode() is used to generate a JWT with a payload containin
 Remember to replace "your_secret_key" with a secret key that you securely manage in your application. Additionally, ensure that you securely transmit and store JWTs to prevent unauthorized access to sensitive information.
 
 
+------------python manage.py makemigrations-----------
+The makemigrations command in Django is used to generate new migration files based on changes you have made to your models. These migration files define the operations that need to be applied to the database schema to make it match the changes you've made to your models.
 
+Here's what happens when you run python manage.py makemigrations:
+
+Django inspects all of the models defined in your Django application and compares them to the previous state of the models saved in the migration files.
+
+Django detects any changes you've made to your models since the last migration and creates a new migration file for each app that has changes.
+
+Each migration file contains Python code that defines the operations needed to apply the changes to the database schema. These operations might include creating, modifying, or deleting database tables, fields, or indexes.
+
+Once the migration files are generated, you can review them to ensure they accurately reflect the changes you've made to your models.
+
+After reviewing the migration files, you can apply them to your database using the python manage.py migrate command. This command executes the migration files and updates the database schema accordingly.
+
+Overall, makemigrations is an essential step in the Django development process, as it allows you to keep your database schema synchronized with your models as you make changes to your application.
 
 
 
