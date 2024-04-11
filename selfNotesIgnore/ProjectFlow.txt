@@ -98,4 +98,65 @@ The makemigrations cmd is used to generate new migration files based on changes 
               ->generate access and refresh token by entering the user credential
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+Now create custom models
+ goto models.py in api folder and work there
+
+ code:
+        from django.db import models
+        from django.contrib.auth.models import User
+       
+       # This class defines the structure of the Note objects in the database.
+        class Note(models.Model):
+            # A short text field limited to 100 characters for the note's title.
+            title = models.CharField(max_length=100)
+            
+            # A large text field for the note's content. No maximum length is enforced.
+            content = models.TextField()
+            
+            # A date and time field that automatically sets to the note's creation time.
+            created_at = models.DateTimeField(auto_now_add=True)
+            
+            # A reference to the User model, establishing a many-to-one relationship.
+            # Each note is linked to a single user, but a user can have many notes.
+            # The on_delete=models.CASCADE argument ensures that when a user is deleted,
+            # all their notes are also deleted from the database.
+            # The related_name="notes" allows access to a user's notes by calling user.notes.all(),
+            # providing a straightforward way to retrieve all notes by a particular user.
+            author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
+          
+            # This method returns the note's title when its object is called,
+            # making it easier to identify the note instance, especially in the Django admin interface.
+            def __str__(self):
+                return self.title
+        
+
+Now create a serializer for this model 
+   A serializer will allow you to easily convert Note instances into JSON format for API responses and vice-versa, from JSON to Note instances for creating or updating notes via your API.
+   ->update serializer.py
+
+          # Import the serializers module from Django Rest Framework
+           from rest_framework import serializers
+           # Import the Note model from the models.py file in the same directory
+           from .models import Note
+           
+           # Define a class NoteSerializer that inherits from serializers.ModelSerializer
+           # This class will be responsible for converting Note instances into JSON format and vice-versa
+           class NoteSerializer(serializers.ModelSerializer):
+               # Meta class is used to provide metadata to the NoteSerializer class
+               class Meta:
+                   # Specify the model associated with this serializer
+                   model = Note
+                   # Define the fields that should be included in the serialized output
+                   # This allows you to be explicit about what data should be made available over your API
+                   fields = ['id', 'title', 'content', 'created_at', 'author']
+                   # Specify fields that should be read-only
+                   # read_only_fields are included in the serialized output but are not expected or modified in the input
+                   # 'author' is set to read-only to prevent it from being modified through the API directly
+                   # This is common for fields that are automatically populated by the model or by the logic in your views
+                   read_only_fields = ('author', 'created_at',)
+           
+           
+        
+        
