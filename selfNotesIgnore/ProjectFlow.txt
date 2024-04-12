@@ -193,5 +193,47 @@ Now create a serializer for this model
                     return Note.objects.filter(author=user)
                          
              
+ ->Now setup urls for them  
+    create urls.py file in api folder 
+    code :-----
+        from django.urls import path
+        from . import views  # Import views module from the current directory
+        # Define the URL patterns for the API
+        urlpatterns = [
+            # Define a URL pattern for listing and creating notes. The path "notes/" corresponds to the base URL for notes
+            # When a GET request is made to this URL, it will list all notes (NoteListCreate.as_view())
+            # When a POST request is made to this URL, it will create a new note
+            path("notes/", views.NoteListCreate.as_view(), name="note-list"),
         
+            # Define a URL pattern for deleting a specific note
+            # The path "notes/delete/<int:pk>/" corresponds to the URL for deleting a note with a specific primary key (pk)
+            # When a DELETE request is made to this URL with the primary key of the note, it will delete the corresponding note (NoteDelete.as_view())
+            path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="delete-note")
+        ]
+
+Now Link these urls from this file to backend / urls.py file
+     update backend/urls.py  ++
+
+         path("api/",include("api.urls")) #By including "api.urls", you're telling Django to include all URL patterns defined in the urls.py file of your api app.
+
+
+Now update database schema .ie migrate in cmd
+
+
+    python manage.py makemigrations
+        o/p------>Migrations for 'api':
+            api\migrations\0001_initial.py
+            - Create model Note
+
+    python manage.py migrate
+        o/p----> Operations to perform:
+                Apply all migrations: admin, api, auth, contenttypes, sessions
+                Running migrations:
+                Applying api.0001_initial... OK
+
+Now run server to check------------------------------
+
+
+++++++++++++++++++++++++++     Frontend setup in React      ++++++++++++++++++++++++++++++++++++++++++++++
+
         

@@ -11,6 +11,8 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="get_token"),  # Map the URL '/api/token/' to the TokenObtainPairView for obtaining JWT tokens
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),  # Map the URL '/api/token/refresh/' to the TokenRefreshView for refreshing JWT tokens
     path("api-auth/", include("rest_framework.urls")),  # Include the Django REST Framework's authentication URLs
+    
+    path("api/",include("api.urls")) #By including "api.urls", you're telling Django to include all URL patterns defined in the urls.py file of your api app.
 ]
 
 
