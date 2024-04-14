@@ -236,4 +236,14 @@ Now run server to check------------------------------
 
 ++++++++++++++++++++++++++     Frontend setup in React      ++++++++++++++++++++++++++++++++++++++++++++++
 
-        
+cd to base directory
+setup rect using vite
+in terminal 
+    -> npm create vite@latest
+    -> cd Frontend
+    -> npm install
+
+install some packeges
+     -> npm install axios react-router-dom jwt-decode
+
+    

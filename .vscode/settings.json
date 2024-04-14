@@ -1,0 +1,4 @@
+{
+  "task.problemMatchers.neverPrompt": false,
+  "python.terminal.activateEnvironment": false
+}
