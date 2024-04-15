@@ -137,6 +137,100 @@ Once you've created migration files using makemigrations, you can apply these ch
 
 
 
+-----------------------Axios-----------------------
+
+Using an interceptor in Axios can be a highly effective way to handle common tasks or operations before sending a request or after receiving a response. This is particularly useful for handling authentication tokens, managing error logging, and performing other repetitive tasks across all requests made from your application.
+
+Here’s how you can set up Axios interceptors for handling authentication tokens and centralizing error handling:
+
+Setup Axios with Interceptors
+Add Interceptors to Attach Tokens: You can automatically attach tokens to all outgoing requests. This ensures that every API call made through Axios includes the necessary authentication headers.
+javascript
+Copy code
+import axios from 'axios';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from './constants'; // Assuming these are defined as shown previously
+
+// Create an instance of axios
+const api = axios.create({
+    baseURL: 'http://your-api-url.com',
+});
+
+// Request interceptor to attach the token to requests
+api.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+// Response interceptor for handling global errors or token refresh logic
+api.interceptors.response.use(
+    response => response, // Just return the response if no errors
+    error => {
+        // Check if it's a token expiry error
+        if (error.response.status === 401) {
+            const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+            // You can add a function to handle token refresh
+            return refreshTokenAndRetryRequest(refreshToken, error.config);
+        }
+        return Promise.reject(error);
+    }
+);
+
+// Example function to handle refreshing of tokens
+async function refreshTokenAndRetryRequest(refreshToken, originalRequest) {
+    try {
+        // API call to refresh token
+        const response = await axios.post('http://your-api-url.com/refresh', { refreshToken });
+        const { accessToken } = response.data;
+        localStorage.setItem(ACCESS_TOKEN, accessToken); // Update the access token
+        // Update the original request with new token
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        // Retry the original request with new token
+        return api(originalRequest);
+    } catch (refreshError) {
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
+        // Redirect to login or do something else on token refresh failure
+        return Promise.reject(refreshError);
+    }
+}
+
+export default api;
+Using the Axios Instance
+Once you have set up your Axios instance with interceptors, you can use this instance to make API calls throughout your application:
+
+javascript
+Copy code
+import api from './api'; // Import the configured Axios instance
+
+// Function to fetch data using the Axios instance
+async function fetchData() {
+    try {
+        const response = await api.get('/data-endpoint');
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+fetchData();
+Key Considerations
+Error Handling: The response interceptor is a great place to handle errors globally. For example, you can detect a 401 Unauthorized response and attempt to refresh the token or redirect the user to the login page.
+Token Refresh: Handle token refresh transparently without affecting the user's experience by retrying the failed request automatically after obtaining a new token.
+Security: Ensure that tokens are stored securely, considering the environment of your application. Avoid local storage in highly secure applications due to potential XSS attacks.
+By leveraging Axios interceptors, you can significantly streamline HTTP request management and improve maintainability of your code.
+
+
+
+
+
 
 
 
