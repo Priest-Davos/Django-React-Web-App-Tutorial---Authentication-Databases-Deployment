@@ -723,6 +723,37 @@ Now add this loadingIndicator in Form.jsx which is being used in Login and regis
       {loading && <LoadingIndicator />} {/* Show loading indicator while processing */}
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+create LogoutButton component  and its css file
+    in LogoutButton.jsx
+            code :-
+                import React from 'react';
+                import { useNavigate } from 'react-router-dom';
+                import '../styles/LogoutButton.css';
+                function LogoutButton() {
+                    const navigate = useNavigate();
+
+                    const handleLogout = () => {
+                        // Clear local storage or any other clean-up tasks
+                        localStorage.clear();
+
+                        // Navigate to the login page or any other appropriate page
+                        navigate('/login');
+                    };
+
+                    return (
+                        <button onClick={handleLogout} className="logout-button">
+                            Logout
+                        </button>
+                    );
+                }
+
+                export default LogoutButton;
+
+Now update Home.jsx  ...++
+  Add this Button tn return after heading
+        -><LogoutButton></LogoutButton>
+
 =====================================================================================================
                        Deployment setup  (1:52:-)
  ===================                      =====================

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../api";
 import Note from "../components/Note"
 import "../styles/Home.css"
+import LogoutButton from "../components/LogoutButton";
 
 function Home() {
   // State variables to manage notes, title, and content of notes
@@ -50,8 +51,10 @@ function Home() {
 
   return (
     <div>
+    <LogoutButton></LogoutButton>
       <div>
         <h2>Notes</h2>
+       
         {/* Map over notes and pass each note to the Note component */}
         {notes.map((note) => (
           <Note note={note} onDelete={deleteNote} key={note.id} />
