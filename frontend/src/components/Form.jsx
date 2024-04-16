@@ -3,7 +3,7 @@ import api from "../api"; // API abstraction for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Hook for navigation
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"; // Token constants
 import "../styles/Form.css" // Styles specific to forms
-// import LoadingIndicator from "./LoadingIndicator"; // UI component to indicate loading process
+import LoadingIndicator from "./LoadingIndicator"; // UI component to indicate loading process
 
 function Form({ route, method }) {
     const [username, setUsername] = useState(""); // State to store the username input
@@ -51,7 +51,7 @@ function Form({ route, method }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
-            {/*loading && <LoadingIndicator />*/} {/* Show loading indicator while processing */}
+            {loading && <LoadingIndicator />} {/* Show loading indicator while processing */}
             <button className="form-button" type="submit">
                 {name}
             </button>
