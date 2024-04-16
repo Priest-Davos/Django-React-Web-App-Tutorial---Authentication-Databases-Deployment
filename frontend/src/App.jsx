@@ -27,8 +27,8 @@ function App() {
         <Route
           path="/" // Main route that is protected
           element={
-            <ProtectedRoute> // Only allow access if user is authenticated
-              <Home /> // Home component for authenticated users
+            <ProtectedRoute> {/* Only allow access if user is authenticated*/}
+          <Home /> {/* Home component for authenticated users*/}
             </ProtectedRoute>
           }
         />
